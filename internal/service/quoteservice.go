@@ -40,22 +40,39 @@ func (s *QuoteServiceImpl) CreateQuote(text, author string) (*domain.Quote, erro
 	return quote, nil
 }
 
-func (s *QuoteServiceImpl) GetAllQuotes(authorFilter string) ([]domain.Quote, error) {
-	if authorFilter != "" {
-		return s.repo.GetByAuthor(authorFilter)
+func (s *QuoteServiceImpl) GetAllQuotes(author string) ([]domain.Quote, error) {
+	if author == "" {
+		quotes, err := s.repo.GetAll()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get all quotes from repository: %w", err)
+		}
+		return quotes, nil
 	}
-	return s.repo.GetAll()
+
+	quotes, err := s.repo.GetByAuthor(author)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get quotes by author from repository: %w", err)
+	}
+	return quotes, nil
 }
 
 func (s *QuoteServiceImpl) GetRandomQuote() (*domain.Quote, error) {
-	return s.repo.GetRandom()
+	quote, err := s.repo.GetRandom()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get random quote from repository: %w", err)
+	}
+	
+	return quote, nil
 }
 
 func (s *QuoteServiceImpl) DeleteQuote(id string) error {
 	if id == "" {
 		return errors.New("ID cannot be empty")
 	}
-	return s.repo.Delete(id)
+	if err := s.repo.Delete(id); err != nil {
+		return fmt.Errorf("failed to delete quote from repository: %w", err)
+	}
+	return nil	
 }
 
 func (s *QuoteServiceImpl) GetByID(id string) (*domain.Quote, error) {

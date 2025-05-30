@@ -4,7 +4,6 @@ import (
 	"errors"
 	"test-task-scout-go/internal/domain"
 	"test-task-scout-go/internal/service"
-	"test-task-scout-go/internal/repository"
 	"testing"
 )
 
@@ -173,16 +172,18 @@ func TestQuoteService_GetAllQuotes(t *testing.T) {
 		if err == nil {
 			t.Error("GetAllQuotes without filter did not return repository error")
 		}
-		if err != nil && err.Error() != "failed to get all quotes from repository: database error" {
-			t.Errorf("Expected database error, got: %v", err)
+		expectedErrGetAll := "failed to get all quotes from repository: database error"
+		if err != nil && err.Error() != expectedErrGetAll {
+			t.Errorf("Expected '%s' error, got: %v", expectedErrGetAll, err)
 		}
 
 		_, err = quoteService.GetAllQuotes("Some Author")
 		if err == nil {
 			t.Error("GetAllQuotes with filter did not return repository error")
 		}
-		if err != nil && err.Error() != "failed to get quotes by author from repository: database error" {
-			t.Errorf("Expected database error, got: %v", err)
+		expectedErrGetByAuthor := "failed to get quotes by author from repository: database error"
+		if err != nil && err.Error() != expectedErrGetByAuthor {
+			t.Errorf("Expected '%s' error, got: %v", expectedErrGetByAuthor, err)
 		}
 	})
 }
@@ -221,8 +222,9 @@ func TestQuoteService_GetRandomQuote(t *testing.T) {
 		if err == nil {
 			t.Error("GetRandomQuote did not return error when not found")
 		}
-		if err != nil && err.Error() != "not found" {
-			t.Errorf("Expected 'not found' error, got: %v", err)
+		expectedErr := "failed to get random quote from repository: not found"
+		if err != nil && err.Error() != expectedErr {
+			t.Errorf("Expected '%s' error, got: %v", expectedErr, err)
 		}
 		if quote != nil {
 			t.Error("GetRandomQuote returned non-nil quote when not found")
@@ -241,8 +243,9 @@ func TestQuoteService_GetRandomQuote(t *testing.T) {
 		if err == nil {
 			t.Error("GetRandomQuote did not return repository error")
 		}
-		if err != nil && err.Error() != "failed to get random quote from repository: database error" {
-			t.Errorf("Expected database error, got: %v", err)
+		expectedErr := "failed to get random quote from repository: database error"
+		if err != nil && err.Error() != expectedErr {
+			t.Errorf("Expected '%s' error, got: %v", expectedErr, err)
 		}
 	})
 }
@@ -277,8 +280,9 @@ func TestQuoteService_DeleteQuote(t *testing.T) {
 		if err == nil {
 			t.Error("DeleteQuote did not return error when not found")
 		}
-		if err != nil && err.Error() != "not found" {
-			t.Errorf("Expected 'not found' error, got: %v", err)
+		expectedErr := "failed to delete quote from repository: not found"
+		if err != nil && err.Error() != expectedErr {
+			t.Errorf("Expected '%s' error, got: %v", expectedErr, err)
 		}
 	})
 
@@ -294,8 +298,9 @@ func TestQuoteService_DeleteQuote(t *testing.T) {
 		if err == nil {
 			t.Error("DeleteQuote did not return repository error")
 		}
-		if err != nil && err.Error() != "failed to delete quote from repository: database error" {
-			t.Errorf("Expected database error, got: %v", err)
+		expectedErr := "failed to delete quote from repository: database error"
+		if err != nil && err.Error() != expectedErr {
+			t.Errorf("Expected '%s' error, got: %v", expectedErr, err)
 		}
 	})
-} 
+}
