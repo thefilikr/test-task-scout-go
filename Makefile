@@ -38,11 +38,6 @@ test-service:
 	@echo "Running service tests..."
 	go test -v ./internal/service
 
-.PHONY: test-router
-test-router:
-	@echo "Running router tests..."
-	go test -v ./internal/router
-
 .PHONY: clean
 clean:
 	@echo "Cleaning build artifacts and database..."
