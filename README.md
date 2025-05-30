@@ -25,8 +25,8 @@
 
 1.  Клонируйте репозиторий:
     ```bash
-    git clone <ссылка на ваш репозиторий>
-    cd <название_директории_проекта>
+    git clone https://github.com/thefilikr/test-task-scout-go.git
+    cd test-task-scout-go
     ```
 2.  Соберите проект с помощью Makefile:
     ```bash
